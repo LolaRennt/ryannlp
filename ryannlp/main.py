@@ -4,9 +4,6 @@
 # Created Time : 2014年03月27日 星期四 09时36分02秒
 from spell import *
 
-for keys in charactor_dict:
-    print keys,charactor_dict[keys]
-
 
 class RyanNLP(object):
     """This is the basic class, combine all the functions using
@@ -17,11 +14,11 @@ class RyanNLP(object):
 
     @property
     def simp(self):
-        pass
+        return toSimple(self.docs)
 
     @property
     def comp(self):
-        pass
+        return toComple(self.docs)
 
     @property
     def spell(self):#Spell the Chinese words
@@ -56,3 +53,11 @@ class RyanNLP(object):
     def train(self,train_type,data):
         pass
 
+
+
+if __name__ == "__main__":
+    
+    m = RyanNLP(u"本条目當前的標題「繁体中文」為暫定名稱，可能為原創、不准确或者具爭議性。 ... 注意：本條目可能有部分字元無法顯示，")
+    st =  m.simp
+    k = RyanNLP(st)
+    print k.comp

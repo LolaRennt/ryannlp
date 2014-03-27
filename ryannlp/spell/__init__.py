@@ -36,6 +36,27 @@ for file_line in file_pin:
     for item in word_pair[1]:
         charactor_dict[item] = word_pair[0]
 
+file_pin.close()
+
+def toSimple(data):
+    str = ""
+    for i in xrange(0,len(data)):
+        if data[i] in comp_dict:
+            str += comp_dict[data[i]]
+        else:
+            str += data[i]
+
+    return str
 
 
+
+def toComple(data):
+    str = ""
+    for i in xrange(0,len(data)):
+        if data[i] in simp_dict:
+            str += simp_dict[data[i]]
+        else:
+            str += data[i]
+
+    return str
 
