@@ -34,7 +34,8 @@ for file_line in file_pin:
     word_pair[1] = word_pair[1].strip("',")[2:]
 
     for item in word_pair[1]:
-        charactor_dict[item] = word_pair[0]
+        charactor_dict.setdefault(item,[])
+        charactor_dict[item].append(word_pair[0])
 
 file_pin.close()
 

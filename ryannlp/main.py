@@ -61,3 +61,5 @@ if __name__ == "__main__":
     st =  m.simp
     k = RyanNLP(st)
     print k.comp
+
+
