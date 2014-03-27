@@ -4,9 +4,9 @@
 # Created Time : 2014年03月24日 星期一 20时17分21秒
 
 import sys
-import math
-sys.path.append('../core')
-from frenqunence import AddOneProb
+import sys, os
+sys.path.append(os.path.join(os.path.dirname(__file__), '..' ))
+import core.frenquency
 
 class Bayes(object):
     
