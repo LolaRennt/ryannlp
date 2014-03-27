@@ -3,10 +3,10 @@
 # Author: Ryan Liu
 # Created Time : 2014年03月24日 星期一 20时17分21秒
 
-import sys
 import sys, os
+import math
 sys.path.append(os.path.join(os.path.dirname(__file__), '..' ))
-import core.frenquency
+from core.frenquency import AddOneProb
 
 class Bayes(object):
     

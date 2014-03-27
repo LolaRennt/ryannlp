@@ -2,6 +2,7 @@
 # -*- coding:utf-8 -*-
 # Author: Ryan Liu
 # Created Time : 2014年03月13日 星期四 16时47分35秒
+import math
 
 class BM25(object):
     """This is BM25 similarity class"""
@@ -27,7 +28,7 @@ class BM25(object):
 
             self.f.append(tmp)
 
-            for k,v in temp.items():
+            for k,v in tmp.items():
                 self.df.setdefault(k,0)
                 self.df[k] += 1
 
@@ -43,8 +44,8 @@ class BM25(object):
         for word in doc:
             if word not in self.f[index]:
                 continue
-            score += self.idf[word] * self.f[index][word] * (k1 + 1) \
-                    / (self.f[index][word] + k1 * (1-b+b*d/avgdl))
+            score += self.idf[word] * self.f[index][word] * (self.k1 + 1) \
+                    / (self.f[index][word] + self.k1 * (1-self.b+self.b*d/self.avgdl))
 
         return score
     
