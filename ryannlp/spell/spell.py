@@ -7,11 +7,13 @@ import sys
 import codecs
 sys.path.append('../core')
 import frenquency
+import math
 
 class Spell(object):
     """This class is used for charactor to spell,and verse vas"""
 
     def __init__(self):
+
        self.chars = {}
        self.un_spell = frenquency.NormalProb()
        self.bi_spell = frenquency.NormalProb()
@@ -19,6 +21,8 @@ class Spell(object):
        self.pins = {}
        self.un_respells = frenquency.NormalProb()
        self.bi_respells = frenquency.NormalProb()
+
+       self.wd = frenquency.NormalProb()
 
     def train(self,data):
         train_file = codecs.open(data,'r','utf-8')
@@ -31,24 +35,68 @@ class Spell(object):
             if not dcorpus:
                 continue
 
-            self.chars.setdefault(dcorpus[0],[])
-            self.chars[dcorpus[0]].append(dcorpus[1])
+            self.wd.add((dcorpus[0],dcorpus[1]),1)
 
-            self.pins.setdefault(dcorpus[1],[])
-            self.pins[dcorpus[1]].append(dcorpus[0])
+            self.chars.setdefault(dcorpus[0],set())
+            self.chars[dcorpus[0]].add(dcorpus[1])
+
+            self.pins.setdefault(dcorpus[1],set())
+            self.pins[dcorpus[1]].add(dcorpus[0])
 
             chars_queue.append(dcorpus[0])
             chars_queue.pop(0)
+
             spell_queue.append(dcorpus[1])
             spell_queue.pop(0)
 
             self.un_spell.add(spell_queue[1],1)
-            self.bi_spells.add(tuple(spell_queue),1)
+            self.bi_spell.add(tuple(spell_queue),1)
 
             self.un_respells.add(chars_queue[1],1)
             self.bi_respells.add(tuple(chars_queue),1)
 
+    def docode(self,wd,hidden_set,out_set,uni_h,bi_h,string):
+        """ Genereral Decode"""
 
+        if not string:
+            return
+        temp = [] #Part implement
+
+        for t in out_set[string[0]]:
+            c = math.log(uni_h.getFreq(t)) + math.log(wd.getCount((string[0],t))) - math.log(uni_h.getCount(t))
+            #c = math.log(wd.getCount[(string[0],t)]) - math.log(uni_h.getCount(t))
+            temp.append(([t],c))
+
+        print temp
+
+        for ch in string[1:]:
+            per_ch_temp = []
+            for t in out_set[ch]:
+                hl  = []
+                for item in temp:
+                    states = list(item[0][:])
+                    c = item[1]
+                    c += math.log(bi_h.getCount((states[-1],t))) - math.log(uni_h.getCount(t)) + math.log(wd.getCount((ch,t))) - math.log(uni_h.getCount(t))
+                    states.append(t)
+                    states = tuple(states)
+                    hl.append((states,c))
+                print hl
+
+                hl = sorted(hl,key = lambda x :x[1],reverse = True)[0]
+                per_ch_temp.append(hl)
+
+            temp = per_ch_temp
+
+        return sorted(temp,key = lambda x : x[1],reverse = True)[0][0]
+
+
+    def toSpell(self,data):
+        pass
+
+
+    def genSentence(self,data):
+        pass
 
 a = Spell()
 a.train('dCorpus.txt')
+

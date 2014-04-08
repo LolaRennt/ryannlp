@@ -25,7 +25,7 @@ class BaseProb(object):
         return self.words[key]
 
     def getFreq(self,key):
-        return float(self.get(key)[1])/self.total
+        return float(self.getCount(key))/self.totle
 
     def allItems(self):
         return self.words.keys()
