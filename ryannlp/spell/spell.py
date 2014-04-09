@@ -15,14 +15,14 @@ class Spell(object):
     def __init__(self):
 
        self.chars = {}
-       self.un_spell = frenquency.NormalProb()
-       self.bi_spell = frenquency.NormalProb()
+       self.un_spell = frenquency.AddOneProb()
+       self.bi_spell = frenquency.AddOneProb()
 
        self.pins = {}
-       self.un_respells = frenquency.NormalProb()
-       self.bi_respells = frenquency.NormalProb()
+       self.un_respells = frenquency.AddOneProb()
+       self.bi_respells = frenquency.AddOneProb()
 
-       self.wd = frenquency.NormalProb()
+       self.wd = frenquency.AddOneProb()
 
     def train(self,data):
         train_file = codecs.open(data,'r','utf-8')
@@ -36,6 +36,7 @@ class Spell(object):
                 continue
 
             self.wd.add((dcorpus[0],dcorpus[1]),1)
+            self.wd.add((dcorpus[1],dcorpus[0]),1)
 
             self.chars.setdefault(dcorpus[0],set())
             self.chars[dcorpus[0]].add(dcorpus[1])
@@ -55,7 +56,7 @@ class Spell(object):
             self.un_respells.add(chars_queue[1],1)
             self.bi_respells.add(tuple(chars_queue),1)
 
-    def docode(self,wd,hidden_set,out_set,uni_h,bi_h,string):
+    def decode(self,wd,hidden_set,out_set,uni_h,bi_h,string):
         """ Genereral Decode"""
 
         if not string:
@@ -71,30 +72,34 @@ class Spell(object):
 
         for ch in string[1:]:
             per_ch_temp = []
-            for t in out_set[ch]:
+            for t in out_set.get(ch,[ch]): 
+                print t
                 hl  = []
                 for item in temp:
                     states = list(item[0][:])
                     c = item[1]
-                    c += math.log(bi_h.getCount((states[-1],t))) - math.log(uni_h.getCount(t)) + math.log(wd.getCount((ch,t))) - math.log(uni_h.getCount(t))
+                    print states[-1]
+                    print (bi_h.getCount((states[-1],t))) ,(uni_h.getCount(states[-1])) ,(wd.getCount((ch,t))),(uni_h.getCount(t))
+                    c += math.log(bi_h.getCount((states[-1],t))) - math.log(uni_h.getCount(states[-1])) + math.log(wd.getCount((ch,t))) - math.log(uni_h.getCount(t))
                     states.append(t)
                     states = tuple(states)
                     hl.append((states,c))
-                print hl
 
                 hl = sorted(hl,key = lambda x :x[1],reverse = True)[0]
                 per_ch_temp.append(hl)
 
             temp = per_ch_temp
 
-        return sorted(temp,key = lambda x : x[1],reverse = True)[0][0]
+        return " ".join(sorted(temp,key = lambda x : x[1],reverse = True)[0][0])
 
 
     def toSpell(self,data):
+        return self.decode(self.wd,self.pins,self.chars,self.un_spell,self.bi_spell,data)
         pass
 
 
     def genSentence(self,data):
+        return self.decode(self.wd,self.chars,self.pins,self.un_respells,self.bi_respells,data)
         pass
 
 a = Spell()
