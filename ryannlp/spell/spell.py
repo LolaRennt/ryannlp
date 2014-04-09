@@ -6,7 +6,7 @@
 import sys
 import codecs
 sys.path.append('../core')
-import frenquency
+from core import frenquency
 import math
 
 class Spell(object):
@@ -68,18 +68,13 @@ class Spell(object):
             #c = math.log(wd.getCount[(string[0],t)]) - math.log(uni_h.getCount(t))
             temp.append(([t],c))
 
-        print temp
-
         for ch in string[1:]:
             per_ch_temp = []
             for t in out_set.get(ch,[ch]): 
-                print t
                 hl  = []
                 for item in temp:
                     states = list(item[0][:])
                     c = item[1]
-                    print states[-1]
-                    print (bi_h.getCount((states[-1],t))) ,(uni_h.getCount(states[-1])) ,(wd.getCount((ch,t))),(uni_h.getCount(t))
                     c += math.log(bi_h.getCount((states[-1],t))) - math.log(uni_h.getCount(states[-1])) + math.log(wd.getCount((ch,t))) - math.log(uni_h.getCount(t))
                     states.append(t)
                     states = tuple(states)
@@ -101,7 +96,4 @@ class Spell(object):
     def genSentence(self,data):
         return self.decode(self.wd,self.chars,self.pins,self.un_respells,self.bi_respells,data)
         pass
-
-a = Spell()
-a.train('dCorpus.txt')
 
