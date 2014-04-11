@@ -17,6 +17,31 @@ Features
 How to use
 ===
 
+```
+    import RyanNLP
+    m = RyanNLP(u"本条目當前的標題「繁体中文」為暫定名稱，可能為原創、不准确或者具爭議性。 ... 注意：本條目可能有部分字元無法顯示，")
+    print m.simp 
+    #本条目当前的标题「繁体中文」为暂定名称，可能为原创、不准确或者具争议性。 ... 注意：本条目可能有部分字元无法显示，
+    
+    m.docs = u"重复的完成繁重的任务"
+    print m.spell
+    #chong fu de wan cheng fan zhong de ren wu
+    
+    m.docs = "ni hao bei jing"
+    print m.gen
+    #你好北京
+    
+    m.docs = u"今天天气不错，挺风和日丽的。"
+    print m.seg
+    #今天 天气 不错 ， 挺 风和日丽 的 。
+    
+    print m.tag
+    #[(今天,t)(天气,n)(不错,a),(,,w)(挺,d)(风和日丽,i)(的,u)(。,w)]
+    
+    
+
+```
+
 
 About training
 ===

@@ -81,7 +81,7 @@ class RyanNLP(object):
         pass
 
     def train(self):
-        #self.speller.train('spell/dCorpus.txt')
+        self.speller.train('spell/dCorpus.txt')
         self.segger.train('seg/data.txt')
         self.tagger.train('tag/1998011.txt')
         pass
@@ -91,9 +91,16 @@ class RyanNLP(object):
 if __name__ == "__main__":
     
     m = RyanNLP(u"本条目當前的標題「繁体中文」為暫定名稱，可能為原創、不准确或者具爭議性。 ... 注意：本條目可能有部分字元無法顯示，")
-    st =  m.simp
-    print st
+    print m.simp
 
-    m.setMeta(u"我爱沈阳故宫")
+    m.docs = m.simp
+    print m.comp
+
+    m.docs = u"重复的完成繁重的任务"
+    print m.spell
+
+
+    m.setMeta(u"今天天气不错，挺风和日丽的。")
+    print m.seg
     print m.tag
 
