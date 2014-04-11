@@ -8,6 +8,10 @@ from spell import *
 import seg.seg
 from seg import *
 
+import tag.tag
+from tag import *
+
+
 class RyanNLP(object):
     """This is the basic class, combine all the functions using
     in Chinese language processing"""
@@ -15,9 +19,11 @@ class RyanNLP(object):
     def __init__(self,docs):
         self.docs = docs;
 
-        self.spe = spell.Spell()
+        self.speller = spell.Spell()
 
         self.segger = seg.Seg()
+
+        self.tagger = tag.Tag()
 
         self.train()
 
@@ -34,7 +40,7 @@ class RyanNLP(object):
 
     @property
     def spell(self):#Spell the Chinese words
-        return self.spe.toSpell(self.docs)
+        return self.speller.toSpell(self.docs)
         pass
 
     @property
@@ -43,7 +49,7 @@ class RyanNLP(object):
             self.docs = self.docs.strip().split()
         except:
             pass
-        return self.spe.genSentence(self.docs)
+        return self.speller.genSentence(self.docs)
         pass
 
     @property
@@ -53,6 +59,7 @@ class RyanNLP(object):
 
     @property
     def tag(self):
+        return self.tagger.tagger.tag(self.docs)
         pass
 
     def extractWord(self,num=1):
@@ -70,8 +77,9 @@ class RyanNLP(object):
         pass
 
     def train(self):
-        #self.spe.train('spell/dCorpus.txt')
-        self.segger.train('seg/data.txt')
+        #self.speller.train('spell/dCorpus.txt')
+        #self.segger.train('seg/data.txt')
+        self.tagger.train('tag/1998011.txt')
         pass
 
 
@@ -82,7 +90,6 @@ if __name__ == "__main__":
     st =  m.simp
     print st
 
-    m.setMeta(u"我爱东北大学")
-
-    print m.seg
+    m.setMeta([u"我",u"爱",u"东北",u"大学"])
+    print m.tag
 

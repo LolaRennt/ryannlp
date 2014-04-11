@@ -4,7 +4,9 @@
 # Created Time : 2014年03月05日 星期三 20时19分30秒
 
 
-import frenquency
+import sys
+sys.path.append('../core')
+from core import frenquency
 import math
 
 class TnT(object):

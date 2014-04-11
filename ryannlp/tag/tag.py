@@ -8,18 +8,20 @@ import codecs
 from tnt import TnT
 
 
-tagger = TnT()
+class Tag(object):
+    """Using for tag words"""
+    def __init__(self):
+        self.tagger = TnT()
 
-def train(file_name):
-    fr = codecs.open(file_name,'r','utf-8')
-    data = []
-    for i in fr:
-        line = i.strip()
-        if not line:
-            continue
-        temp = map(lambda x:x.split('/'),line.split())
-        data.append(temp)
-    fr.close()
-    tagger.train(data)
-
+    def train(self,file_name):
+        fr = codecs.open(file_name,'r','utf-8')
+        data = []
+        for i in fr:
+            line = i.strip()
+            if not line:
+                continue
+            temp = map(lambda x:x.split('/'),line.split())
+            data.append(temp)
+        fr.close()
+        self.tagger.train(data)
 
