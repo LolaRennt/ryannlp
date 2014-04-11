@@ -57,5 +57,3 @@ class BM25(object):
             scores.append(score)
         return scores
 
-
-

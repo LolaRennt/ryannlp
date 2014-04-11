@@ -4,7 +4,9 @@
 # Created Time : 2014年03月05日 星期三 20时19分30秒
 
 
-import frenquency
+import sys
+sys.path.append('../core')
+from core import frenquency
 import math
 
 class CharacterBasedGenerativeModel(object):
@@ -40,7 +42,7 @@ class CharacterBasedGenerativeModel(object):
 
                 tagnow = tagnow[1:]
 
-        t1 = t2 = t3 = 0
+        t1 = t2 = t3 = 0 # Delete insertion 
 
         for item in self.tri.allItems():
 
@@ -81,9 +83,9 @@ class CharacterBasedGenerativeModel(object):
         sentence.append(u'EOF')
         tagnow = [ [ ( (u'',u'P'),(u'',u'P') ),   0.0] ]
         for word in sentence:
-            print word
+            #print word
             stateset = self.wordState.get(word,self.allState)
-            print stateset
+            #print stateset
 
             tagpre = tagnow[:]
 
@@ -101,9 +103,9 @@ class CharacterBasedGenerativeModel(object):
 
                     tagtemp.append([tuple(statenow),probnow])
                 #print tagtemp
-                print tagtemp
+                #print tagtemp
                 findmax = max(tagtemp,key=lambda x:x[1])
                 tagnow.append(findmax)
-            print tagnow
+            #print tagnow
         return tagnow
 

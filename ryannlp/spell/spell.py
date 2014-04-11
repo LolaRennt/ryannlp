@@ -61,7 +61,7 @@ class Spell(object):
 
         if not string:
             return
-        temp = [] #Part implement
+        temp = [] #Meidian result 
 
         for t in out_set[string[0]]:
             c = math.log(uni_h.getFreq(t)) + math.log(wd.getCount((string[0],t))) - math.log(uni_h.getCount(t))

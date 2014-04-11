@@ -5,13 +5,20 @@
 import spell.spell
 from spell import *
 
+import seg.seg
+from seg import *
+
 class RyanNLP(object):
     """This is the basic class, combine all the functions using
     in Chinese language processing"""
 
     def __init__(self,docs):
         self.docs = docs;
+
         self.spe = spell.Spell()
+
+        self.segger = seg.Seg()
+
         self.train()
 
     def setMeta(self,docs):
@@ -41,6 +48,7 @@ class RyanNLP(object):
 
     @property
     def seg(self):
+        return self.segger.segger.seg(self.docs)
         pass
 
     @property
@@ -62,7 +70,8 @@ class RyanNLP(object):
         pass
 
     def train(self):
-        self.spe.train('spell/dCorpus.txt')
+        #self.spe.train('spell/dCorpus.txt')
+        self.segger.train('seg/data.txt')
         pass
 
 
@@ -73,13 +82,7 @@ if __name__ == "__main__":
     st =  m.simp
     print st
 
-    m.setMeta(st)
-    print m.comp
+    m.setMeta(list(u"大家新年快乐"))
 
-    print m.spell
-
-    m.setMeta("bucuo")
-    print m.gen
-
-
+    print m.seg
 

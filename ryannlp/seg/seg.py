@@ -3,6 +3,7 @@
 # Author: Ryan Liu
 # Created Time : 2014年03月11日 星期二 09时43分59秒
 
+import sys
 import codecs
 from cbgm import CharacterBasedGenerativeModel
 
