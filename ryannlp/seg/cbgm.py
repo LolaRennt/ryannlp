@@ -75,7 +75,7 @@ class CharacterBasedGenerativeModel(object):
         trif = 0 if self.big.getCount((s1,s2)) == 0 else self.lam3 * self.tri.getCount((s1,s2,s3))/self.big.getCount((s1,s2))
 
         if unif + bigf + trif == 0:
-            return float('-inf')
+            return float('-200')
         return math.log(unif+bigf+trif)
 
     def interpretSeg(self,data):

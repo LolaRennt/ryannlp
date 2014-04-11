@@ -73,7 +73,7 @@ class TnT(object):
         self.lam2 = float(t2)/(t1+t2+t3)
         self.lam3 = float(t3)/(t1+t2+t3)
 
-        print self.lam1,self.lam2,self.lam3
+        #print self.lam1,self.lam2,self.lam3
 
         for s1 in self.state:
             for s2 in self.state:
@@ -87,6 +87,12 @@ class TnT(object):
 
 
     def tag(self,sentence):
+
+        def not_find(c):
+            if c == 0:
+                return -100
+            return c
+
         sentence.append(u'EOF')
         tagnow = [[(u'P',u'P'),0.0]]
         for word in sentence:
@@ -105,7 +111,7 @@ class TnT(object):
 
                     probnow = item[1]
                     probnow += self.trans[tritutle]
-                    probnow += math.log(self.wd.getCount((word,state))) - math.log(self.uni.getCount(state))
+                    probnow += math.log(not_find(self.wd.getCount((word,state)))) - math.log(not_find(self.uni.getCount(state)))
 
                     statenow = list(item[0])
                     statenow.append(state)
@@ -114,5 +120,5 @@ class TnT(object):
                 #print tagtemp
                 findmax = max(tagtemp,key=lambda x:x[1])
                 tagnow.append(findmax)
-        return tagnow
+        return zip(sentence,tagnow[0][0][2:-1])
 

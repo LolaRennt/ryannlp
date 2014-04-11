@@ -59,7 +59,11 @@ class RyanNLP(object):
 
     @property
     def tag(self):
-        return self.tagger.tagger.tag(self.docs)
+        self.temp = self.docs.split(' ')
+        if len(self.temp) == 1:
+            self.temp = self.segger.segger.seg(list(self.docs))
+
+        return self.tagger.tagger.tag(self.temp)
         pass
 
     def extractWord(self,num=1):
@@ -78,7 +82,7 @@ class RyanNLP(object):
 
     def train(self):
         #self.speller.train('spell/dCorpus.txt')
-        #self.segger.train('seg/data.txt')
+        self.segger.train('seg/data.txt')
         self.tagger.train('tag/1998011.txt')
         pass
 
@@ -90,6 +94,6 @@ if __name__ == "__main__":
     st =  m.simp
     print st
 
-    m.setMeta([u"我",u"爱",u"东北",u"大学"])
+    m.setMeta(u"我爱沈阳故宫")
     print m.tag
 
