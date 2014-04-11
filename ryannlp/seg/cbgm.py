@@ -66,7 +66,7 @@ class CharacterBasedGenerativeModel(object):
         self.lam2 = float(t2)/(t1+t2+t3)
         self.lam3 = float(t3)/(t1+t2+t3)
 
-        print self.lam1,self.lam2,self.lam3
+        #print self.lam1,self.lam2,self.lam3
 
     def log_prob(self,s1,s2,s3):
 
@@ -78,6 +78,34 @@ class CharacterBasedGenerativeModel(object):
             return float('-inf')
         return math.log(unif+bigf+trif)
 
+    def interpretSeg(self,data):
+        temp = ""
+        wordset = []
+
+        for item in data:
+            if item[1] == u'P':
+                continue
+            elif item[1] == u's':
+                if temp:
+                    wordset.append(temp)
+                wordset.append(item[0])
+                temp = ""
+                continue
+            elif item[1] == u'e':
+                temp += item[0]
+                wordset.append(temp)
+                temp = ""
+            elif item[1] == u'EOF':
+                if temp:
+                    wordset.append(temp)
+            elif item[1] == u'b':
+                if temp:
+                    wordset.append(temp)
+                temp = item[0]
+            else:
+                temp += item[0]
+
+        return wordset
 
     def seg(self,sentence):
         sentence.append(u'EOF')
@@ -107,5 +135,5 @@ class CharacterBasedGenerativeModel(object):
                 findmax = max(tagtemp,key=lambda x:x[1])
                 tagnow.append(findmax)
             #print tagnow
-        return tagnow
+        return self.interpretSeg(tagnow[0][0])
 

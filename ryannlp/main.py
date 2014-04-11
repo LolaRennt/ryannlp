@@ -48,8 +48,8 @@ class RyanNLP(object):
 
     @property
     def seg(self):
-        return self.segger.segger.seg(self.docs)
-        pass
+        self.temp = self.segger.segger.seg(list(self.docs))
+        return " ".join(self.temp)
 
     @property
     def tag(self):
@@ -82,7 +82,7 @@ if __name__ == "__main__":
     st =  m.simp
     print st
 
-    m.setMeta(list(u"大家新年快乐"))
+    m.setMeta(u"我爱东北大学")
 
     print m.seg
 

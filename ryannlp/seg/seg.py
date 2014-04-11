@@ -26,5 +26,3 @@ class Seg(object):
         fr.close()
         self.segger.train(data)
 
-seg = Seg()
-    
