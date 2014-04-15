@@ -102,11 +102,14 @@ class TnT(object):
             #print stateset
             tagpre = tagnow[:]
             tagnow = []
+
+            map_each = {}
+
             for state in stateset:
                 if state == u'P':
                     continue
                 #print state
-                tagtemp = []
+                #tagtemp = []
                 for item in tagpre:
                     tritutle = (item[0][-2],item[0][-1],state)
 
@@ -116,10 +119,14 @@ class TnT(object):
 
                     statenow = list(item[0])
                     statenow.append(state)
-
-                    tagtemp.append([tuple(statenow),probnow])
+                    #tagtemp.append([tuple(statenow),probnow])
+                    if tuple(statenow)[-2:] not in map_each or probnow > map_each[tuple(statenow)[-2:]][1]:
+                        map_each[tuple(statenow)[-2:]] = [tuple(statenow),probnow]
                 #print tagtemp
-                findmax = max(tagtemp,key=lambda x:x[1])
-                tagnow.append(findmax)
+                #findmax = max(tagtemp,key=lambda x:x[1])
+            tagnow = map_each.values()
+
+        tagnow = sorted(tagnow,key=lambda x:x[1],reverse = True)
+
         return zip(sentence,tagnow[0][0][2:-1])
 
