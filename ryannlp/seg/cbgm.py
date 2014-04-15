@@ -4,6 +4,7 @@
 # Created Time : 2014年03月05日 星期三 20时19分30秒
 
 
+from __future__ import division
 import sys
 sys.path.append('../core')
 from core import frenquency
@@ -27,7 +28,7 @@ class CharacterBasedGenerativeModel(object):
 
         for sentence in data:
             tagnow = [('','P'),('','P')]
-            sentence.append((u'EOF',u'EOF')) # Add a EOS to every sentence
+            #sentence.append((u'EOF',u'EOF')) # Add a EOS to every sentence
 
             for word,tag in sentence:
 
@@ -59,14 +60,12 @@ class CharacterBasedGenerativeModel(object):
             elif case2 >= case1 and case2 >= case3:
                 t2 += self.tri.getCount(item)
 
-            else:
+            elif case1 >= case2 and case1 >= case3:
                 t1 += self.tri.getCount(item)
 
         self.lam1 = float(t1)/(t1+t2+t3)
         self.lam2 = float(t2)/(t1+t2+t3)
         self.lam3 = float(t3)/(t1+t2+t3)
-
-        #print self.lam1,self.lam2,self.lam3
 
     def log_prob(self,s1,s2,s3):
 
@@ -102,7 +101,6 @@ class CharacterBasedGenerativeModel(object):
         return wordset
 
     def seg(self,sentence):
-        sentence.append(u'EOF')
         tagnow = [ [ ( (u'',u'P'),(u'',u'P') ),   0.0] ]
         for word in sentence:
             #print word
@@ -112,9 +110,11 @@ class CharacterBasedGenerativeModel(object):
             tagpre = tagnow[:]
 
             tagnow = []
+            tagtemp = {}
+
             for state in stateset:
-                tagtemp = []
                 for item in tagpre:
+
                     tritutle = (item[0][-2],item[0][-1],(word,state))
 
                     probnow = item[1]
@@ -123,11 +123,17 @@ class CharacterBasedGenerativeModel(object):
                     statenow = list(item[0])
                     statenow.append((word,state))
 
-                    tagtemp.append([tuple(statenow),probnow])
+                    if (statenow[-2],statenow[-1]) not in tagtemp or probnow > tagtemp[(statenow[-2],statenow[-1])][1]:
+                        tagtemp[(statenow[-2],statenow[-1])] = [tuple(statenow),probnow]
+
+                    #tagtemp.append([tuple(statenow),probnow])
                 #print tagtemp
-                print tagtemp
-                findmax = max(tagtemp,key=lambda x:x[1])
-                tagnow.append(findmax)
-            #print tagnow
-        return self.interpretSeg(tagnow[0][0])
+                #print tagtemp
+                #findmax = max(tagtemp,key=lambda x:x[1])
+
+            tagnow = tagtemp.values()
+            #tagnow.append(findmax)
+        tagnow = sorted(tagnow,key=lambda x:x[1],reverse = True)[0]
+        tagnow = tagnow[0]
+        return self.interpretSeg(tagnow)
 

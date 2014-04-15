@@ -4,6 +4,7 @@
 # Created Time : 2014年03月05日 星期三 20时19分30秒
 
 
+from __future__ import division
 import sys
 sys.path.append('../core')
 from core import frenquency

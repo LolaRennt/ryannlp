@@ -97,7 +97,7 @@ class RyanNLP(object):
 
 if __name__ == "__main__":
     
-    m = RyanNLP(u"在最威胁手机领域里，手机很好")
+    m = RyanNLP(u"于是，在智能手机诞生七年的时间点上，Google发布了Android Wear，三星拼命的推Gear死守Tizen操作系统，这都是为了找回安全感。没有了乔布斯的苹果，还不知道能否赢得下一个未来。而中华酷联们，这些还不是该考虑的事情，毕竟，等到局势明朗了，只要跟随就又是一片晴天。")
     print m.words
     #print m.simp
 
