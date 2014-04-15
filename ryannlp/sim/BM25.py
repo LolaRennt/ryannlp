@@ -43,6 +43,9 @@ class BM25(object):
         score = 0
         d = len(self.docs[index])
 
+        if self.docs[index] == doc: # If is the same sentence ,then return 0, let same sentence alone
+            return 0
+
         for word in doc:
             if word not in self.f[index]:
                 continue
