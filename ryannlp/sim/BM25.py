@@ -2,7 +2,9 @@
 # -*- coding:utf-8 -*-
 # Author: Ryan Liu
 # Created Time : 2014年03月13日 星期四 16时47分35秒
+from __future__ import division
 import math
+
 
 class BM25(object):
     """This is BM25 similarity class"""
@@ -32,7 +34,7 @@ class BM25(object):
                 self.df.setdefault(k,0)
                 self.df[k] += 1
 
-        for k,v in self.df.item():
+        for k,v in self.df.items():
             self.idf[k] = math.log(self.d - v + 0.5)-math.log(v+0.5)
                 
     
@@ -52,7 +54,7 @@ class BM25(object):
 
     def simall(self,doc):
         scores = []
-        for index in range(self.D):
+        for index in range(self.d):
             score = self.sim(doc,index)
             scores.append(score)
         return scores

@@ -3,6 +3,7 @@
 # Author: Ryan Liu
 # Created Time : 2014年03月05日 星期三 10时23分37秒
 
+from __future__ import division
 from good_turing import *
 
 class BaseProb(object):

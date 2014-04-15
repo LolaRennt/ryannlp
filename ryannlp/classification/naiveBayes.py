@@ -3,6 +3,8 @@
 # Author: Ryan Liu
 # Created Time : 2014年03月24日 星期一 20时17分21秒
 
+
+from __future__ import division
 import sys, os
 import math
 sys.path.append(os.path.join(os.path.dirname(__file__), '..' ))
