@@ -17,7 +17,7 @@ class CharacterBasedGenerativeModel(object):
         self.big = frenquency.NormalProb()
         self.tri = frenquency.NormalProb()
 
-        self.lam1 = self.lam2 = self.lam3 = 0
+        self.lam1 = self.lam2 = self.lam3 = 0.0
 
         self.allState = ('b','m','e','s')
 
@@ -75,7 +75,7 @@ class CharacterBasedGenerativeModel(object):
         trif = 0 if self.big.getCount((s1,s2)) == 0 else self.lam3 * self.tri.getCount((s1,s2,s3))/self.big.getCount((s1,s2))
 
         if unif + bigf + trif == 0:
-            return float('-200')
+            return float('-300')
         return math.log(unif+bigf+trif)
 
     def interpretSeg(self,data):
@@ -85,12 +85,6 @@ class CharacterBasedGenerativeModel(object):
         for item in data:
             if item[1] == u'P':
                 continue
-            elif item[1] == u's':
-                if temp:
-                    wordset.append(temp)
-                wordset.append(item[0])
-                temp = ""
-                continue
             elif item[1] == u'e':
                 temp += item[0]
                 wordset.append(temp)
@@ -98,7 +92,7 @@ class CharacterBasedGenerativeModel(object):
             elif item[1] == u'EOF':
                 if temp:
                     wordset.append(temp)
-            elif item[1] == u'b':
+            elif item[1] == u'b' or item[1] == u's':
                 if temp:
                     wordset.append(temp)
                 temp = item[0]
@@ -131,7 +125,7 @@ class CharacterBasedGenerativeModel(object):
 
                     tagtemp.append([tuple(statenow),probnow])
                 #print tagtemp
-                #print tagtemp
+                print tagtemp
                 findmax = max(tagtemp,key=lambda x:x[1])
                 tagnow.append(findmax)
             #print tagnow
