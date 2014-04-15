@@ -11,8 +11,8 @@ from seg import *
 import tag.tag
 from tag import *
 
-#import textrank.textrank
-#from textrank import *
+import textrank.textrank
+from textrank import *
 
 
 class RyanNLP(object):
@@ -27,7 +27,7 @@ class RyanNLP(object):
 
         self.tagger = tag.Tag()
 
-        #self.word_rank = textrank.KeywordTextRank(docs)
+        self.word_ranker = textrank.KeywordTextRank(docs)
 
         self.train()
 
@@ -70,10 +70,14 @@ class RyanNLP(object):
         return self.tagger.tagger.tag(self.temp)
         pass
 
-    def extractWord(self,num=1):
-        #self.word_rank = textrank.KeywordTextRank(docs)
-        #self.word_rank.solve
-        #self.get_top(num)
+    def extractWord(self,num=5):
+
+        self.test = []                   #test case
+        self.test.append(self.docs)
+
+        self.word_ranker = textrank.KeywordTextRank(self.test)
+        self.word_ranker.solve()
+        return self.word_ranker.get_top(num)
         pass
 
     def extractSentence(self,num=1):
@@ -89,7 +93,7 @@ class RyanNLP(object):
 
     def train(self):
         #self.speller.train('spell/dCorpus.txt')
-        self.segger.train('seg/data.txt')
+        #self.segger.train('seg/data.txt')
         #self.tagger.train('tag/1998011.txt')
         pass
 
@@ -97,8 +101,12 @@ class RyanNLP(object):
 
 if __name__ == "__main__":
     
-    m = RyanNLP(u"于是，在智能手机诞生七年的时间点上，Google发布了Android Wear，三星拼命的推Gear死守Tizen操作系统，这都是为了找回安全感。没有了乔布斯的苹果，还不知道能否赢得下一个未来。而中华酷联们，这些还不是该考虑的事情，毕竟，等到局势明朗了，只要跟随就又是一片晴天。")
-    print m.words
+    test = u"在 智能 电视 领域 ， 随着 智能 电视 的 升级 ， 将 能 满足 更 多 内容 互动 和 游戏 娱乐 ， 多屏 应用 必然 会 分散 手机 的 时间 份额 ， 减少 用户 对 手机 的 投资"
+    m = RyanNLP(test.split(" "))
+    #m = RyanNLP(u"ni hao bei jing")
+    print " ".join(m.extractWord())
+
+    #print m.words
     #print m.simp
 
     #m.docs = m.simp

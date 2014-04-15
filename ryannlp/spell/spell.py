@@ -3,6 +3,7 @@
 # Author: Ryan Liu
 # Created Time : 2014年03月27日 星期四 20时34分23秒
 
+from __future__ import division
 import sys
 import codecs
 sys.path.append('../core')
