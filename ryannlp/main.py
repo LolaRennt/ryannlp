@@ -27,7 +27,8 @@ class RyanNLP(object):
     def __init__(self,text):
 
         self.text = text;
-        self.docs = []
+
+        #self.docs = []
 
         #self.transForm()
 
@@ -43,18 +44,17 @@ class RyanNLP(object):
 
         self.train()
 
-
     def setText(self,text):
         self.text = text
         transForm()
 
     @property
     def simp(self):
-        return toSimple(self.docs)
+        return toSimple(self.text)
 
     @property
     def comp(self):
-        return toComple(self.docs)
+        return toComple(self.text)
 
     @property
     def spell(self):#Spell the Chinese words
@@ -137,8 +137,13 @@ if __name__ == "__main__":
     因而 它 是 计算机 科学 的 一 部分
     """
 
-    m = RyanNLP(test1.split())
-    print m.keyWords(9)
+    m = RyanNLP(test)
+    print m.comp
+
+    m.text = m.comp
+
+    print m.text
+    print m.simp
 
     #m = RyanNLP(u"ni hao bei jing")
 
@@ -155,4 +160,3 @@ if __name__ == "__main__":
     #m.setMeta(u"今天天气不错，挺风和日丽的。")
     #print m.seg
     #print m.tag
-
