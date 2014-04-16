@@ -64,10 +64,13 @@ class Spell(object):
             return
         temp = [] #Meidian result 
 
-        for t in out_set[string[0]]:
-            c = math.log(uni_h.getFreq(t)) + math.log(wd.getCount((string[0],t))) - math.log(uni_h.getCount(t))
-            #c = math.log(wd.getCount[(string[0],t)]) - math.log(uni_h.getCount(t))
-            temp.append(([t],c))
+        if string[0] not in out_set:
+            temp.append(([string[0]],0))
+        else:
+            for t in out_set[string[0]]:
+                c = math.log(uni_h.getFreq(t)) + math.log(wd.getCount((string[0],t))) - math.log(uni_h.getCount(t))
+                #c = math.log(wd.getCount[(string[0],t)]) - math.log(uni_h.getCount(t))
+                temp.append(([t],c))
 
         for ch in string[1:]:
             per_ch_temp = []
