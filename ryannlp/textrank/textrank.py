@@ -56,11 +56,10 @@ class TextRank(object):
 
         self.top = list(enumerate(self.vertex))
         self.top = sorted(self.top,key=lambda x : x[1],reverse=True)
-        print self.top
 
 
     def get_top(self,limit=10):
-        return list(map(lambda x : self.docs[x[0]],self.top[:limit]))
+        return list(map(lambda x : "".join(self.docs[x[0]]),self.top[:limit]))
 
 
 
@@ -118,10 +117,26 @@ class KeywordTextRank(object):
                 break
 
         self.top = list(self.vertex.items())
-        print self.top
-        self.top = sorted(self.top,key=lambda x :x[1],reverse = True)
-        print self.top
+        self.top = map(lambda x : x[0],sorted(self.top,key=lambda x :x[1],reverse = True))
+        self.top = filter(lambda x : len(x)>1 ,self.top)[:5]
+
+        self.ret_map = sorted(self.mergeWord(self.top),key = lambda x :len(x),reverse = True)
+        
+    def mergeWord(self,top):
+        """ Merge key words according to the source sentencs"""
+        word_set = set()
+        for doc in self.docs:
+            temp = ""
+            for item in doc:
+                if item in top:
+                    temp += item
+                else:
+                    if temp:
+                        word_set.add(temp)
+                    temp = ""
+        return word_set
+
 
     def get_top(self,limit = 5):
-        return list(map(lambda x : x[0],self.top[:limit]))
+        return self.ret_map[:limit]
 

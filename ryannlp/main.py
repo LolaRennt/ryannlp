@@ -113,28 +113,36 @@ class RyanNLP(object):
             temp = self.tagger.tagger.tag(item)
             for t in temp:
                 print t[0]+"/"+t[1],
-            print 
+            print
             ret_vec.append(temp)
             #print ret_vec
 
         return ret_vec
+    @property
+    def keyWords(self,num=4):
 
-    def keyWords(self,num=5):
+        self.temp = self.split_words(False)
 
-        self.test = []                   #Construct test case for using
-        self.test.append(self.text)
-
-        self.word_ranker = textrank.KeywordTextRank(self.test)
+        self.word_ranker = textrank.KeywordTextRank(self.temp)
         self.word_ranker.solve()
-        return self.word_ranker.get_top(num)
-        pass
-
-    def extractSentence(self,num=1):
         
-        self.temp = []
+        temp = self.word_ranker.get_top(num)
+        print " ".join(temp)
+        return temp
 
-        self.text_ranker = textrank.TextRank(self.docs)
+    @property
+    def extractSentence(self,num=3):
+        
+        self.temp = self.split_words(False)
+
+        self.text_ranker = textrank.TextRank(self.temp)
         self.text_ranker.solve()
+        self.ret =  self.text_ranker.get_top(num)
+
+        for i in xrange(num):
+            print self.ret[i]
+
+        return self.ret[:num]
 
         pass
 
@@ -149,32 +157,32 @@ class RyanNLP(object):
     def train(self):
         #self.speller.train('spell/dCorpus.txt')
         self.segger.train('seg/data.txt')
-        self.tagger.train('tag/1998011.txt')
+        #self.tagger.train('tag/1998011.txt')
         pass
 
 
 
 if __name__ == "__main__":
     
-    test = u"""自然语言处理是计算机科学领域与人工智能领域中的一个重要方向。。
+    test = u"""自然语言处理是计算机科学领域与人工智能领域中的一个重要方向。
 它研究能实现人与计算机之间用自然语言进行有效通信的各种理论和方法。
 自然语言处理是一门融语言学、计算机科学、数学于一体的科学。
 因此，这一领域的研究将涉及自然语言，即人们日常使用的语言， 所以它与语言学的研究有着密切的联系，但又有重要的区别。
-自然语言处理并不是一般地研究自然语言， 而在于研制能有效地实现自然语言通信的计算机系统， 特别是其中的软件系统。因而它是计算机科学的一部分。
-重复的完成繁重的任务。 """
+自然语言处理并不是一般地研究自然语言， 而在于研制能有效地实现自然语言通信的计算机系统， 特别是其中的软件系统。
+因而它是计算机科学的一部分。
+重复完成繁重的任务。 """
 
     test1 = u"""
-    自然 语言 处理 是 计算机 科学 领域 与 人工 智能 领域 中 的 一个 重要 方向 它 研究 能 实现 人 与 计算机 之间 用 自然 语言 进行 有效 通信 的 各种 理论 和 方法 自然 语言 处理 是 一 门融 语言 学 、 计算机 科学 、 数学 于 一体 的 科学 因此 ， 这 一 领域 的 研究 将 涉及 自然 语言 ， 即 人们 日常 使用 的 语言 所以 它 与 语言学 的 研究 有着 密切 的 联系 ， 但 又 有 重要 的 区别 自然 语言 处理 并 不 是 一般 地 研究 自然 语言 而 在于 研制 能 有效 地 实现 自然 语言 通信 的 计算机 系统 特别 是 其中 的 软件 系统 
-    因而 它 是 计算机 科学 的 一 部分
+    自然 语言 处理 是 计算机 科学 领域 与 人工 智能 领域 中 的 一个 重要 方向 它 研究 能 实现 人 与 计算机 之间 用 自然 语言 进行 有效 通信 的 各种 理论 和 方法 自然 语言 处理 是 一 门融 语言 学 、 计算机 科学 、 数学 于 一体 的 科学 因此 ， 这 一 领域 的 研究 将 涉及 自然 语言 ， 即 人们 日常 使用 的 语言 所以 它 与 语言学 的 研究 有着 密切 的 联系 ， 但 又 有 重要 的 区别 自然 语言 处理 并 不 是 一般 地 研究 自然 语言 而 在于 研制 能 有效 地 实现 自然 语言 通信 的 计算机 系统 特别 是 其中 的 软件 系统 因而 它 是 计算机 科学 的 一 部分
     """
 
     m = RyanNLP(test)
 
-    m.words
 
     print "------"
 
-    m.tags
+    #m.extractSentence
+    m.keyWords
 
     #m = RyanNLP(u"ni hao bei jing")
 
