@@ -74,10 +74,10 @@ class RyanNLP(object):
     def gen(self):# Need to imporve
         """ Generate simplified Chineses sentence from spelling """
         try:
-            self.docs = self.docs.strip().split()
+            temp = self.text.strip().split()
         except:
             pass
-        return self.speller.genSentence(self.docs)
+        return self.speller.genSentence(temp)
         pass
 
 
@@ -163,6 +163,10 @@ class RyanNLP(object):
 
 
 if __name__ == "__main__":
+
+    t = RyanNLP(u"ni hao bei jing")
+    print t.gen
+    
     
     test = u"""自然语言处理是计算机科学领域与人工智能领域中的一个重要方向。
 它研究能实现人与计算机之间用自然语言进行有效通信的各种理论和方法。
@@ -175,26 +179,33 @@ if __name__ == "__main__":
     m = RyanNLP(test)
 
     print test
+    print
 
-    print "------Spell----"
+    print "------Spell-----"
     print m.spell
+    print
 
-    print "------Comple---"
+    print "------Comple----"
     print m.comp
+    print
 
-    print "------Segs-----"
+    print "------Segs------"
     m.words
+    print
 
-    print "------Tags-----"
+    print "------Tags------"
     m.tags
+    print
 
-    print "------keyWords-"
+    print "------keyWords--"
     m.keyWords
+    print
 
-    print "------Abstract-"
+    print "------Abstract--"
     m.extractSentence
+    print
 
-    print "------"
+    print "----------------"
 
     #m.extractSentence
 
